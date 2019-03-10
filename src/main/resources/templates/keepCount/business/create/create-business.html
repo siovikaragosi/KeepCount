@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Collapsible sidebar using Bootstrap 4</title>
+<!-- <link rel="stylesheet" href="../../static/css/pos/style2.css" th:href="@{css/pos/style2.css}" /> -->
+<link href="../static/css/style2.css" th:href="@{/css/style2.css}" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous"
+/>
+<!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
+<!-- Font Awesome JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+
+
+
+
+<script type="text/javascript" th:src="@{/js/src/login.js}"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+
+<body class="wrapper" style="padding-top: 60px; padding-left: 10px; padding-right: 10px; padding-bottom: 60px; background: #00688B">
+
+
+	<div class="container">
+
+		<div class="row">
+			<h3>Please choose or create a business</h3>
+		</div>
+
+
+
+		<div class="row ">
+
+			<div class="row col-sm-4">
+
+				<h5>
+					Do not want to create a new business? <br /> <a class="btn btn-primary tile" href="/business/chooseBusiness/{email}">Choose a business</a> <br />
+					<!-- <a class="btn btn-primary" href="/keepCount/business/user/create-user"></a> -->
+				</h5>
+			</div>
+
+		</div>
+
+
+
+
+
+
+		<div class="row">
+			<form action="">
+
+				<div class="tile" style="background: teal; padding-left: 20px;">
+					<div class="tile-body">
+
+						<div class="row">
+							<h5>
+								Create new business here...
+								<!-- <a class="btn btn-primary" href="/keepCount/business/user/create-user"></a> -->
+							</h5>
+						</div>
+
+						<div class="form-group row">
+							<label for="inputCreateBusiness" class="col-sm-5 col-form-label">Business Name</label>
+
+							<div class="col-sm-10">
+
+								<input type="text" class="form-control" id="inputCreateBusiness" placeholder="your business name">
+
+							</div>
+						</div>
+
+						<div class="form-group row">
+
+							<label for="inputBusinessEmail" class="col-sm-5 col-form-label">Your email</label>
+
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="inputBusinessEmail" placeholder="your email" />
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+
+	</div>
+
+
+
+
+</body>
+</html>

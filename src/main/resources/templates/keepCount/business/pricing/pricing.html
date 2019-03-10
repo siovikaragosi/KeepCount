@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title>POS cash</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="../static/css/style2.css" th:href="@{/css/main.css}" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" th:src="@{/js/src/business/pricing/pricing.js}"></script>
+<script type="text/javascript" th:src="@{/js/src/business/pricing/pricing_update.js}"></script>
+<style type="text/css">
+.tableFixHead {
+	overflow: auto;
+	height: 300px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 8px 16px;
+}
+
+th {
+	background: teal;
+}
+</style>
+<script type="text/javascript">
+	function samplePhotoOneChange( input ) {
+		if ( input.files && input.files [ 0 ] ) {
+			var filerd = new FileReader();
+			filerd.onload = function( e ) {
+				$( '#samplePhotoOnePreview' ).attr( 'src' , e.target.result );
+			};
+			filerd.readAsDataURL( input.files [ 0 ] );
+		}
+	}
+</script>
+<script type="text/javascript">
+	function samplePhotoTwoChange( input ) {
+		if ( input.files && input.files [ 0 ] ) {
+			var filerd = new FileReader();
+			filerd.onload = function( e ) {
+				$( '#samplePhotoTwoPreview' ).attr( 'src' , e.target.result );
+			};
+			filerd.readAsDataURL( input.files [ 0 ] );
+		}
+	}
+</script>
+<script type="text/javascript">
+	function samplePhotoThreeChange( input ) {
+		if ( input.files && input.files [ 0 ] ) {
+			var filerd = new FileReader();
+			filerd.onload = function( e ) {
+				$( '#samplePhotoThreePreview' ).attr( 'src' , e.target.result );
+			};
+			filerd.readAsDataURL( input.files [ 0 ] );
+		}
+	}
+</script>
+<!-- <script type="text/javascript">
+	$(document).ready(function() {
+
+		// code to read selected table row cell data (values).
+		$("#createPricingTable").on('click', '.btnSelect', function() {
+
+			// get the current row
+			var currentRow = $(this).closest("tr");
+
+			// get current row, item ID
+			var colPriceId = currentRow.find("td:eq(0)").text();
+			alert(colPriceId);
+
+			var colDateServer = currentRow.find("td:eq(1)").text();
+
+			var colDateClient = currentRow.find("td:eq(2)").text();
+			alert("Date Client: " + colDateClient);
+
+			// get current row, item name
+			var colItemPrice = currentRow.find("td:eq(3)").text();
+			alert("price: " + colItemPrice);
+
+			// get current row, item sub category 
+			var colItemSubCat = currentRow.find("td:eq(4)").text();
+			alert("sub: " + colItemSubCat);
+
+			// get current row, item quantity
+			var colItemSubCategory = currentRow.find("td:eq(5)").text();
+			//alert("sub: " + colItemQuantity);
+
+			if (!confirm('You are choosing this row for editing.\nAre you sure about this?'))
+				return;
+
+			/*Select by description for jQuery v1.6+:*/
+			var text1 = colItemSubCategory;
+			$("#itemFld option").filter(function() {
+				//may want to use $.trim in here
+				return $(this).text() == text1;
+			}).prop('selected', true);
+
+			/*Select by description for jQuery v1.6+:*/
+
+			//$('#itemCreditFld').attr('src', colSamplePhotoOne);
+			$("#itemPriceFld").val(colItemPrice);
+
+		});
+
+		$(window).scroll(function() {
+			if ($(this).scrollTop()) {
+				$('#toTop').fadeIn();
+			} else {
+				$('#toTop').fadeOut();
+			}
+		});
+
+		$("#toTop").click(function() {
+			//1 second of animation time
+			//html works for FFX but not Chrome
+			//body works for Chrome but not FFX
+			//This strange selector seems to work universally
+			$("html, body").animate({
+				scrollTop : 0
+			}, 1000);
+		});
+
+	});
+</script>
+ -->
+<script>
+	$( document ).ready( function() {
+		$( '.tableFixHead' ).on( 'scroll' , function() {
+			$( 'thead' , this ).css( 'transform' , 'translateY(' + this.scrollTop + 'px)' );
+		} );
+	} );
+</script>
+<style type="text/css">
+.kdnotification {
+	display: none
+}
+
+.kdnotification a {
+	text-shadow: 0 1px 0 #444
+}
+
+.kdnotification {
+	position: fixed;
+	padding: 10px;
+	z-index: 20001;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px
+}
+
+.kdnotification .kdnotification-title {
+	color: #fff;
+	font-size: 24px;
+	line-height: 36px;
+	margin: 2px;
+	font-weight: 700
+}
+
+.kdnotification .kdnotification-content {
+	font-size: 16px;
+	line-height: 18px;
+	color: #fff
+}
+
+.kdnotification .kdnotification-timer {
+	position: absolute;
+	top: 21px;
+	right: 25px;
+	color: #fff;
+	line-height: 15px;
+	text-align: center;
+	font-size: 15px;
+	width: 20px;
+	height: 24px
+}
+
+.kdnotification a {
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	top: 24px;
+	right: 5px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 24px;
+	text-decoration: none;
+	color: #fff;
+	width: 20px;
+	height: 24px
+}
+
+.kdnotification-title {
+	font-size: 18px;
+	line-height: 28px;
+	float: none
+}
+
+.kdnotification-title {
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	float: none
+}
+
+.kdnotification.mini {
+	-webkit-border-radius: 0 0 5px 5px;
+	-moz-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
+	padding: 1px;
+	-webkit-box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000;
+	-moz-box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000;
+	box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000
+}
+
+.kdnotification-title {
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	float: none;
+	padding: 2px 10px
+}
+
+.kdnotification.mini .kdnotification-title p {
+	padding: 0 10px
+}
+
+.kdnotification.mini.error {
+	background: rgba(185, 74, 72, .9);
+	font-weight: 600
+}
+
+.kdnotification.mini.success {
+	background: rgba(70, 136, 71, .8);
+	font-weight: 600
+}
+</style>
+</head>
+<body class="app sidebar-mini rtl">
+	<div id="notification" class="kdnotification main">
+		<div class="kdnotification-title"></div>
+	</div>
+	<!-- Navbar-->
+	<header class="app-header">
+		<a class="app-header__logo" href="#">KeepCount</a>
+		<!-- Sidebar toggle button-->
+		<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+		<!-- Navbar Right Menu-->
+		<ul class="app-nav">
+			<li class="app-search"><input class="app-search__input" type="search" placeholder="Search">
+				<button class="app-search__button">
+					<i class="fa fa-search"></i>
+				</button></li>
+			<!--Notification Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
+				<ul class="app-notification dropdown-menu dropdown-menu-right">
+					<li class="app-notification__title">You have 4 new notifications.</li>
+					<div class="app-notification__content">
+						<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-primary"
+									></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Lisa sent you a mail</p>
+									<p class="app-notification__meta">2 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-danger"
+									></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Mail server not working</p>
+									<p class="app-notification__meta">5 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-success"
+									></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Transaction complete</p>
+									<p class="app-notification__meta">2 days ago</p>
+								</div></a></li>
+						<div class="app-notification__content">
+							<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-primary"
+										></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Lisa sent you a mail</p>
+										<p class="app-notification__meta">2 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-danger"
+										></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Mail server not working</p>
+										<p class="app-notification__meta">5 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-success"
+										></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Transaction complete</p>
+										<p class="app-notification__meta">2 days ago</p>
+									</div></a></li>
+						</div>
+					</div>
+					<li class="app-notification__footer"><a href="#">See all notifications.</a></li>
+				</ul></li>
+			<!-- User Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+				<ul class="dropdown-menu settings-menu dropdown-menu-right">
+					<li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+					<li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+					<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+				</ul></li>
+		</ul>
+	</header>
+	<!-- Sidebar menu-->
+	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	<aside class="app-sidebar">
+		<div class="app-sidebar__user">
+			<img class="app-sidebar__user-avatar" src="/images/salah.jpg" alt="User Image" style="width: 50px; height: 60px;">
+			<div>
+				<p class="app-sidebar__user-name">DC</p>
+				<p class="app-sidebar__user-designation">Devloper</p>
+			</div>
+		</div>
+		<ul class="app-menu">
+			<li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span
+					class="app-menu__label"
+				>Items (Commodities)</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="/business/items/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i> Add - Edit - Delete
+							items</a></li>
+					<li><a class="treeview-item" href="/business/unitsOfMeasurement/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i> Unit of
+							measurement</a></li>
+					<li><a class="treeview-item" href="/business/pricing/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i> Pricing</a></li>
+				</ul></li>
+			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span
+					class="app-menu__label"
+				>Purchases</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="/business/purchasesCash/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>Purchases cash</a></li>
+					<li><a class="treeview-item" href="/business/purchasesCredit/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>Purchases
+							credit</a></li>
+					<li><a class="treeview-item" href="/business/purchasesReturns/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>Purchases
+							Returns</a></li>
+				</ul></li>
+			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span
+					class="app-menu__label"
+				>Sales</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="/business/pos/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>POS cash</a></li>
+					<li><a class="treeview-item" href="/business/posCredit/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>POS credit</a></li>
+					<li><a class="treeview-item" href="/business/salesReturns/{businessName}/{emailOfUser}"><i class="icon fa fa-circle-o"></i>Sales Returns</a></li>
+				</ul></li>
+			<li><a class="app-menu__item" href="/business/orders/{businessName}/{emailOfUser}"><i class="app-menu__icon fa fa-pie-chart"></i><span
+					class="app-menu__label"
+				>Orders</span></a></li>
+			<li><a class="app-menu__item" href="/business/reports/{businessName}/{emailOfUser}"><i class="app-menu__icon fa fa-pie-chart"></i><span
+					class="app-menu__label"
+				>Reports</span></a></li>
+			<li><a class="app-menu__item" href="/business/auditHistory/{businessName}/{emailOfUser}"><i class="app-menu__icon fa fa-pie-chart"></i><span
+					class="app-menu__label"
+				>History</span></a></li>
+		</ul>
+	</aside>
+	<!-- copy all here -->
+	<main class="app-content">
+	<div class="app-title">
+		<div>
+			<h1>
+				<i class="fa fa-edit"></i>Items/Commodities/Services
+			</h1>
+			<p>Create...edit...delete items</p>
+		</div>
+		<ul class="app-breadcrumb breadcrumb">
+			<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+			<li class="breadcrumb-item">Forms</li>
+			<li class="breadcrumb-item"><a href="#">Custom Components</a></li>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tile">
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalToSetNewPricePriceForASelecedtedItem">Set item price</button>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addToCartItemListModal">Add Items</button>
+				<br />
+				<div class="form-group">
+					<label> Choose digit formatting:</label> <select id="numberFormatFld"></select>
+				</div>
+				<div class="form-group">
+					<input id="numberFormatObtainedFld" name="numberFormatObtainedFld" type="hidden" placeholder="item id" class="form-control" required="required"
+						disabled="disabled"
+					/>
+				</div>
+				<div class="card">
+					<div class="card card-body">
+						<div class="tableFixHead">
+							<!-- <div class="table table-responsive table-condensed table-striped"> -->
+							<table id="createPricingTable" class="table table-striped table-condensed table-responsive">
+								<!-- <table id="createPricingTable" class="table table-striped  table-bordered table-hover"> -->
+								<thead>
+									<tr>
+										<th>Date (server)</th>
+										<!-- 1 -->
+										<th>Date</th>
+										<!-- 2 -->
+										<th>Price</th>
+										<!-- 3 -->
+										<th>Item Sub Category</th>
+										<!-- 4 -->
+										<th>Delete</th>
+										<!-- 5 -->
+										<th>Edit</th>
+										<!-- 6 -->
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="bottom_anchor"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Dialog (pop up) to set price of an item without a set price -->
+	<div class="modal fade" id="modalToSetNewPricePriceForASelecedtedItem" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Set price of an item</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="tile">
+					<div class="modal-body tile-body">
+						<div class="row">
+							<div class="col-md-6">
+								<!-- <div class="tile-body"> -->
+								<!-- <h4>
+									<b>Set price of a new item</b>
+								</h4> -->
+								<form id="create_item_form" th:object="${emailsOfABusinessForm}" th:action="@{/business/pricing/{businessName}/{emailOfUser}}" method='POST'>
+									<div class="form-group">
+										<label>Item:</label> <select id="itemFld"></select>
+									</div>
+									<div class="form-group">
+										<label>Item Price</label> <input id="itemPriceFld" name="itemPriceFld" type="text" placeholder="item price" class="form-control"
+											required="required"
+										/>
+									</div>
+									<div class="form-group">
+										<input type="hidden" th:value="${emailOfUser}" id="emailOfUserFld" />
+									</div>
+									<div class="form-group">
+										<input type="hidden" th:value="${businessName}" id="businessNameFld" />
+									</div>
+									<div class="form-group">
+										<input id="itemIdFld" name="itemIdFld" type="hidden" placeholder="item id" class="form-control" required="required" disabled="disabled" />
+									</div>
+									<div class="form-group">
+										<input id="itemPriceIdFld" name="itemPriceIdFld" type="hidden" placeholder="price id" class="form-control" required="required"
+											disabled="disabled"
+										/>
+									</div>
+									<div class="form-group">
+										<input id="dateServer" name="dateServer" type="hidden" placeholder="date server" class="form-control" required="required" disabled="disabled" />
+									</div>
+									<div class="form-group">
+										<input id="dateClient" name="dateClient" type="hidden" placeholder="date client" class="form-control" required="required" disabled="disabled" />
+									</div>
+									<button type="button" class="btn btn-success" id="idBtnSavePriceOfNewItem">Save</button>
+								</form>
+								<!-- </div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Dialog (pop up) to update item selected by the user -->
+	<div class="modal fade" id="" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit this item details</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="create_item_form" th:object="${emailsOfABusinessForm}" method='POST'>
+						<div class="form-group">
+							<label>Item Name</label> <input id="itemNameUpdateFld" name="itemNameUpdate" type="text" placeholder="item name" class="form-control"
+								required="required"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Item Category</label> <input id="itemCategoryUpdateFld" name="itemCategoryUpdateFld" type="text" placeholder="item category"
+								class="form-control" required="required"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Item Sub Category </label> <input id=itemSubCategoryUpdateFld name="itemSubCategoryUpdateFld" type="text" placeholder="item sub category"
+								class="form-control" required="required"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Item Description</label>
+							<textarea rows="5" cols="10" id="itemDescriptionUpdateFld" name="itemName" placeholder="Describe this item here..." class="form-control"
+								required="required"
+							></textarea>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-3 tile chooseFileDiv">
+								Sample photo 1 <input type="file" class="form-control hide_file" id="btnPickSamplePhotoOneUpdate" onchange="samplePhotoOneChangeUpdate(this)"
+									accept="image/*"
+								/> <br /> <img src="" id="samplePhotoOnePreviewUpdate" class="form-control img-rounded" />
+							</div>
+							<div class="form-group">
+								<input id="itemSamplePhotoOneURLUpdateFld" placeholder="sample photo one url" name="itemSamplePhotoOneURLUpdateFld" type="hidden"
+									class="form-control" disabled="disabled"
+								/>
+							</div>
+							<div class="form-group">
+								<input id="previousItemSamplePhotoOneURLUpdateFld" placeholder="previous sample photo one url" name="previousItemSamplePhotoOneURLUpdateFld"
+									type="hidden" class="form-control" disabled="disabled"
+								/>
+							</div>
+							<div class="form-group col-sm-3 tile chooseFileDiv">
+								Sample photo 2 <input type="file" class="form-control hide_file" id="btnPickSamplePhotoTwoUpdate" onchange="samplePhotoTwoChangeUpdate(this)"
+									accept="image/*"
+								/> <br /> <img src="" id="samplePhotoTwoPreviewUpdate" class="form-control img-rounded" />
+							</div>
+							<div class="form-group">
+								<input id="itemSamplePhotoTwoURLUpdateFld" placeholder="sample photo two url" name="itemSamplePhotoTwoURLUpdateFld" class="form-control"
+									type="hidden" disabled="disabled"
+								/>
+							</div>
+							<div class="">
+								<input id="previousItemSamplePhotoTwoURLUpdateFld" placeholder="previous sample photo two url" name="previousItemSamplePhotoTwoURLUpdateFld"
+									class="form-control" type="hidden" disabled="disabled"
+								/>
+							</div>
+							<div class="form-group col-sm-3 tile chooseFileDiv">
+								Sample photo 3 <input type="file" class="form-control hide_file" id="btnPickSamplePhotoThreeUpdate" onchange="samplePhotoThreeChangeUpdate(this)"
+									accept="image/*"
+								/> <br /> <img src="" id="samplePhotoThreePreviewUpdate" class="form-control img-rounded" />
+							</div>
+							<div class="form-group">
+								<input id="itemSamplePhotoThreeURLUpdateFld" placeholder="sample photo three url" name="itemSamplePhotoThreeUpdateURLFld" class="form-control"
+									type="hidden" disabled="disabled"
+								/>
+							</div>
+							<div class="form-group">
+								<input id="previousItemSamplePhotoThreeURLUpdateFld" placeholder="previous sample photo three url" name="previousItemSamplePhotoThreeURLUpdateFld"
+									class="form-control" type="hidden" disabled="disabled"
+								/>
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+						<input type="button" value="Save Item changes" id="btnSaveItemChanges" class="btn btn-default" />
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Check out dialog -->
+	<div class="modal fade" id="checkOutModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Checkout</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group row">
+							<label for="inputCustomerPhone" class="col-sm-4 col-form-label">Customer Phone</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="inputCustomerPhone" placeholder="phone number">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputCustomerEmail" class="col-sm-4 col-form-label">Customer Email</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="inputCustomerEmail" placeholder="email">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputCustomerBusinessName" class="col-sm-4 col-form-label">Business Name</label>
+							<div class="col-sm-10">
+								<select class="form-control" id="inputCustomerBusinessName"></select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-5">
+								<input type="button" value="Checkout" class="form-control btn btn-success" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<!-- Essential javascripts for application to work-->
+	<script type="text/javascript" th:src="@{/js/src/js/jquery-3.2.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/src/js/popper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/src/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/src/js/main.js}"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script type="text/javascript" th:src="@{/js/src/js/plugins/pace.min.js}"></script>
+	<!-- Page specific javascripts-->
+	<script type="text/javascript" th:src="@{/js/src/js/plugins/bootstrap-datepicker.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/src/js/plugins/select2.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/src/js/plugins/bootstrap-datepicker.min.js}"></script>
+	<script type="text/javascript">
+		$( '#sl' ).click( function() {
+			$( '#tl' ).loadingBtn();
+			$( '#tb' ).loadingBtn( {
+				text : "Signing In"
+			} );
+		} );
+
+		$( '#el' ).click( function() {
+			$( '#tl' ).loadingBtnComplete();
+			$( '#tb' ).loadingBtnComplete( {
+				html : "Sign In"
+			} );
+		} );
+
+		$( '#demoDate' ).datepicker( {
+			format : "yyyy-mm-dd" ,
+			autoclose : true ,
+			todayHighlight : true
+		} );
+
+		$( '#demoSelect' ).select2();
+	</script>
+</body>
+</html>

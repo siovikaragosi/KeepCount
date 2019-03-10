@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- layout:decorate="~{fragments/business/create/main_layout_business_create}" -->
+
+<head>
+
+<title>Create a new user</title>
+
+
+
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" /> -->
+
+<!-- <link
+	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet"
+	href="../../static/css/materia/jquery-3.3.1.min.js"
+	th:href="@{css/materia/jquery-3.3.1.min.js}" />
+
+
+<link rel="stylesheet" href="../../static/css/style.css"
+	th:href="@{css/style.css}" />
+
+<link rel="stylesheet" href="../../static/css/materia/bootstrap.min.css"
+	th:href="@{css/materia/bootstrap.min.css}" />
+ -->
+
+
+<!-- <script type="text/javascript" th:src="@{/js/src/business/user/user-datatable.js}"></script> -->
+<script type="text/javascript" th:src="@{/js/src/business/user/user.js}"></script>
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+.tableFixHead {
+	overflow: auto;
+	height: 300px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+/* th, td {
+	padding: 8px 16px;
+}
+ */
+th {
+	background: #fde;
+}
+</style>
+
+
+
+<script type="text/javascript">
+	function imagepreview(input) {
+		if (input.files && input.files[0]) {
+			var filerd = new FileReader();
+			filerd.onload = function(e) {
+				$('#imagePreview').attr('src', e.target.result);
+			};
+			filerd.readAsDataURL(input.files[0]);
+		}
+	}
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		// code to read selected table row cell data (values).
+		$("#createUserTable").on('click', '.btnSelect', function() {
+			// get the current row
+			var currentRow = $(this).closest("tr");
+
+			var colUserFirstName = currentRow.find("td:eq(0)").text(); // get current row user first name
+
+			var colUserLastName = currentRow.find("td:eq(1)").text(); // get current row user last name
+			var colUserPhoneNumber = currentRow.find("td:eq(2)").text(); // get current row user phone number
+			var colUserEmail = currentRow.find("td:eq(3)").text(); // get current row user email
+			var colUserNIN = currentRow.find("td:eq(4)").text(); // get current row user nin
+			var colUserPhoto = currentRow.find("td:eq(5)").text(); // get current row user photo
+			var colUserId = currentRow.find("td:eq(6)").text(); // get current row user ID (auto)
+
+			/* var data = col1 + "\n" + col2 + "\n" + col3 + "\n"
+					+ col4 + "\n" + col5 + "\n" + col6 + "\n"
+					+ col7;
+			 */
+
+			if (!confirm('show?'))
+				return;
+
+			$("#userFirstNameFld").val(colUserFirstName);
+			$("#userLastNameFld").val(colUserLastName);
+			$("#userPhoneNumberFld").val(colUserPhoneNumber);
+			$("#userEmailFld").val(colUserEmail);
+			$("#userNINFld").val(colUserNIN);
+			$("#imageIdFld").val(colUserPhoto);
+			$("#imagePreview").val(colUserPhoto);
+			$("#userIdFld").val(colUserId);
+
+			console.log(colUserPhoto);
+
+			/* alert(data); */
+		});
+
+		$(window).scroll(function() {
+			if ($(this).scrollTop()) {
+				$('#toTop').fadeIn();
+			} else {
+				$('#toTop').fadeOut();
+			}
+		});
+
+		$("#toTop").click(function() {
+			//1 second of animation time
+			//html works for FFX but not Chrome
+			//body works for Chrome but not FFX
+			//This strange selector seems to work universally
+			$("html, body").animate({
+				scrollTop : 0
+			}, 1000);
+		});
+
+	});
+</script>
+
+
+
+<!-- <script type="text/javascript">
+	$(document).ready(function() {
+		if ($(this).scrollTop()) {
+			$('#scroll').fadeIn();
+		} else {
+			$('#scroll').fadeOut();
+		}
+	});
+
+	$("#scroll").click(function() {
+		//1 second of animation time
+		//html works for FFX but not Chrome
+		//body works for Chrome but not FFX
+		//This strange selector seems to work universally
+		$("html, body").animate({
+			scrollTop : 0
+		}, 1000);
+	});
+</script> -->
+
+
+
+
+<script>
+	$(document).ready(
+			function() {
+				$('.tableFixHead').on(
+						'scroll',
+						function() {
+							$('thead', this).css('transform',
+									'translateY(' + this.scrollTop + 'px)');
+						});
+			});
+</script>
+
+
+
+
+<script>
+	$(document)
+			.ready(
+					function() {
+						$("#btnPickUserPhoto")
+								.change(
+										function() {
+											var filesSelected = document
+													.getElementById("btnPickUserPhoto").files;
+											if (filesSelected.length > 0) {
+												var fileToLoad = filesSelected[0];
+												var fileReader = new FileReader();
+												fileReader.onload = function(
+														fileLoadedEvent) {
+													var base64value = fileLoadedEvent.target.result;
+													console.log(base64value);
+													$("#imageIdFld").val(
+															base64value);
+												};
+												fileReader
+														.readAsDataURL(fileToLoad);
+											}
+										});
+					});
+</script>
+
+
+</head>
+
+
+<body class="container mySpace">
+
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="/keepCount/signUp/signup" class="navbar-brand">Sign up</a>
+
+			</div>
+
+		</div>
+	</div>
+
+	<div>
+
+		<br /> <br /> <br />
+
+		<h3>
+			<b><i>Create users</i></b>
+		</h3>
+
+		<a href="/business/users">Show users</a>
+
+
+		<form id="create_user_form" th:object="${emailsOfABusinessForm}"
+			th:action="@{/business/users/{businessName}/{emailOfUser}}"
+			method='POST'>
+
+			<div class="form-group">
+				<label>User First Name</label> <input id="userFirstNameFld"
+					name="userFirstName" type="text" placeholder="user first name"
+					class="form-control" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>User Last Name </label> <input id="userLastNameFld"
+					name="userLastName" type="text" placeholder="user first name"
+					class="form-control" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>User Phone Number</label> <input id="userPhoneNumberFld"
+					name="userPhoneNumber" type="text" placeholder="user first name"
+					class="form-control" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>User Email</label> <input id="userEmailFld" name="userEmail"
+					type="text" placeholder="user first name" class="form-control"
+					required="required" />
+			</div>
+
+
+			<div class="form-group">
+				<label>User NIN</label> <input id="userNINFld" name="userNIN"
+					type="text" placeholder="user first name" class="form-control"
+					required="required" />
+			</div>
+
+			<div class="form-group">
+				<input id="imageIdFld" name="imageIdFld" type="text"
+					placeholder="user first name" class="form-control"
+					disabled="disabled" />
+			</div>
+
+			<div>
+
+				<input id="userIdFld" name="userIdFld" type="text"
+					placeholder="user id" class="form-control" required="required"
+					disabled="disabled" />
+
+			</div>
+
+
+			<div>
+				<label>User photo</label> <input type="file" class="btn btn-default"
+					value="Choose image" id="btnPickUserPhoto"
+					onchange="imagepreview(this)" accept="image/*" /> <br />
+			</div>
+
+			<div class="form-group">
+				<img alt="image preview" src="" id="imagePreview"
+					class="img-rounded" width="20%" height="40%" />
+			</div>
+
+
+
+
+
+			<!--
+			
+			
+			<div class="form-group">
+				<label>User Last Name</label>
+				<input id="userLastNameFld" name="userLastName" type="text" placeholder="user last name" class="form-control" required="required" />
+			</div>
+			
+			
+			
+			 <div class="form-group">
+				<label>User Phone Number</label>
+				<input id="userPhoneNumberFld" name="userPhoneNumber" type="text" placeholder="user phone number" class="form-control" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>User Email</label>
+				<input id="userEmailFld" name="userEmail" type="text" placeholder="user email" class="form-control" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>User NIN/Passport details/SSN</label>
+				<input id="userNINFld" name="userNIN" type="text" placeholder="NIN/Passport/SSN" class="form-control" required="required" />
+			</div>
+			
+			<div>
+				<label>User NIN/Passport details/SSN</label>
+				<input id="emailOfCreator" name="emailOfCreator" type="hidden" class="form-control" />
+			</div>
+			
+			 <div>
+				<label>User photo</label>
+				<input type="file" class="btn btn-default" value="Choose image" id="btnPickUserPhoto" />
+				onchange="imagepreview(this)"
+				<br/>
+			</div> 
+			
+			<div class="form-group">
+			<img alt="image preview" src="" id="imagePreview" class="img-rounded" width="20%"  height="40%"/>
+			</div>
+ -->
+			<div class="form-group">
+				<input type="hidden" th:value="${emailOfUser}" id="emailOfUserFld" />
+			</div>
+
+			<div class="form-group">
+				<input type="hidden" th:value="${businessName}" id="businessNameFld" />
+			</div>
+
+			<input type="button" value="Create" id="btnSaveUser"
+				class="btn btn-default" /> <input type="button"
+				value="Save changes" id="btnSaveUserChanges" class="btn btn-default" />
+
+		</form>
+
+
+
+
+
+		<br /> <br /> <br />
+
+
+
+		<div class="card">
+
+			<div class="card card-body">
+
+				<div class="tableFixHead">
+					<!-- <div class="table table-responsive table-condensed table-striped"> -->
+
+					<table id="createUserTable"
+						class="table table-striped  table-bordered table-hover">
+
+						<thead>
+							<tr>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>phone</th>
+								<th>Email</th>
+
+								<th>NIN</th>
+								<th>Photo</th>
+								<th>Delete</th>
+								<th>Edit</th>
+							</tr>
+						</thead>
+
+
+						<tbody>
+
+						</tbody>
+
+					</table>
+
+					<div id="bottom_anchor"></div>
+
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</div>
+
+
+	<br />
+	<br />
+	<br />
+	<br />
+
+
+</body>
+
+</html>

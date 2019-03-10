@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Collapsible sidebar using Bootstrap 4</title>
+<!-- <link rel="stylesheet" href="../../static/css/pos/style2.css" th:href="@{css/pos/style2.css}" /> -->
+<link href="../static/css/style2.css" th:href="@{/css/style2.css}" rel="stylesheet" />
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap CSS CDN -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	crossorigin="anonymous" />
+<!-- Our Custom CSS -->
+
+
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
+
+<!-- Font Awesome JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" th:src="@{/js/src/business/customer/customer.js}"></script>
+
+
+
+
+
+
+<style type="text/css">
+.tableFixHead {
+	overflow: auto;
+	height: 300px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+/* th, td {
+	padding: 8px 16px;
+}
+ */
+th {
+	background: #fde;
+}
+</style>
+
+
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		// code to read selected table row cell data (values).
+		$("#createCustomerTable").on('click', '.btnSelect', function() {
+			// get the current row
+			var currentRow = $(this).closest("tr");
+
+			//get the customer name  i.e the first column
+			var colCustomerName = currentRow.find("td:eq(1)").text();
+
+			//get the customer phone number i.e the second column 			
+			var colCustomerPhoneNumber = currentRow.find("td:eq(2)").text();
+
+			//get the customer eamail i.e the third column
+			var colCustomerEmail = currentRow.find("td:eq(3)").text();
+
+			//get the customer location i.e the fourth column
+			var colCustomerLocation = currentRow.find("td:eq(4)").text();
+
+			//get the customer website i.e the fifth column
+			var colCustomerWebsite = currentRow.find("td:eq(5)").text();
+			var colCustomerId = currentRow.find("td:eq(0)").text();
+
+			/* var data = colCustomerName; */
+
+			if (!confirm('You have picked customer info for editing. Do you want to continue this action?'))
+				return;
+
+			$("#customerNameFld").val(colCustomerName);
+			$("#customerPhoneNumberFld").val(colCustomerPhoneNumber);
+			$("#customerEmailFld").val(colCustomerEmail);
+			$("#customerLocationFld").val(colCustomerLocation);
+			$("#customerWebsiteFld").val(colCustomerWebsite);
+			$("#customerIdFld").val(colCustomerId);
+
+			/* alert(data); */
+
+			/* $("#itemNameFld").val(colItemFirstName); */
+
+			/* console.log(colItemPhoto); */
+
+			/* alert(data); */
+		});
+
+		$(window).scroll(function() {
+			if ($(this).scrollTop()) {
+				$('#toTop').fadeIn();
+			} else {
+				$('#toTop').fadeOut();
+			}
+		});
+
+		$("#toTop").click(function() {
+			//1 second of animation time
+			//html works for FFX but not Chrome
+			//body works for Chrome but not FFX
+			//This strange selector seems to work universally
+			$("html, body").animate({
+				scrollTop : 0
+			}, 1000);
+		});
+
+	});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('.clear').click(function() {
+			$("#customerNameFld").val("");
+			$("#customerPhoneNumberFld").val("");
+			$("#customerEmailFld").val("");
+			$("#customerLocationFld").val("");
+			$("#customerWebsiteFld").val("");
+			$("#customerIdFld").val("");
+		});
+
+	});
+</script>
+
+
+<script>
+	$(document).ready(function() {
+		$('.tableFixHead').on('scroll', function() {
+			$('thead', this).css('transform', 'translateY(' + this.scrollTop + 'px)');
+		});
+	});
+</script>
+
+
+
+
+</head>
+
+
+<body>
+
+	<div class="wrapper">
+		<!-- Sidebar  -->
+		<nav id="sidebar">
+			<div class="sidebar-header">
+				<h3>Bootstrap Sidebar</h3>
+			</div>
+
+			<p>Dummy Heading</p>
+
+			<ul class="list-unstyled components">
+
+				<li><a href="#itemSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Items (Commodities)</a>
+
+					<ul class="collapse list-unstyled" id="itemSubMenu">
+
+						<li><a href="/business/items/{businessName}/{emailOfUser}">Add - Edit - Delete items</a></li>
+						<li><a href="/business/unitsOfMeasurement/{businessName}/{emailOfUser}">Item unit of measurement</a></li>
+						<li><a href="/business/pricing/{businessName}/{emailOfUser}">Item pricing</a></li>
+
+					</ul></li>
+
+				<li><a href="/business/users/{businessName}/{emailOfUser}">Users</a></li>
+				<li><a href="/business/suppliers/{businessName}/{emailOfUser}">Suppliers</a></li>
+				<li><a href="/business/customers/{businessName}/{emailOfUser}">Customers (Buyers)</a></li>
+
+
+
+				<li><a href="#purchasesSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Purchases</a>
+					<ul class="collapse list-unstyled" id="purchasesSubMenu">
+						<li><a href="/business/purchasesCash/{businessName}/{emailOfUser}">Purchases cash</a></li>
+						<li><a href="/business/purchasesCredit/{businessName}/{emailOfUser}">Purchases credit</a></li>
+						<li><a href="/business/purchasesReturns/{businessName}/{emailOfUser}">Purchases Returns</a></li>
+					</ul></li>
+
+
+				<li><a href="#salesSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sales</a>
+					<ul class="collapse list-unstyled" id="salesSubMenu">
+						<li><a href="/business/pos/{businessName}/{emailOfUser}">POS cash</a></li>
+						<li><a href="/business/posCredit/{businessName}/{emailOfUser}">POS credit</a></li>
+						<li><a href="/business/salesReturns/{businessName}/{emailOfUser}">Sales Returns</a></li>
+					</ul></li>
+
+
+				<li><a href="/business/orders/{businessName}/{emailOfUser}">Orders</a></li>
+				<li><a href="/business/reports/{businessName}/{emailOfUser}">Reports</a></li>
+				<li><a href="/business/auditHistory/{businessName}/{emailOfUser}">History</a></li>
+
+
+
+				<li><a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+					<ul class="collapse list-unstyled" id="pageSubmenu">
+						<li><a href="#"></a></li>
+						<li><a href="#">Page 2</a></li>
+						<li><a href="#">Page 3</a></li>
+					</ul></li>
+			</ul>
+
+		</nav>
+
+		<!-- Page Content  -->
+		<div id="content">
+
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+				<div class="container-fluid">
+
+					<button type="button" id="sidebarCollapse" class="btn btn-info">
+						<i class="fas fa-align-left"></i> <span></span>
+					</button>
+					<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<i class="fas fa-align-justify"></i>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="nav navbar-nav ml-auto">
+							<li class="nav-item active"><a class="nav-link" href="#">Page</a></li>
+							<li class="nav-item"><a class="nav-link" href="#">Page</a></li>
+							<li class="nav-item"><a class="nav-link" href="#">Page</a></li>
+							<li class="nav-item"><a class="nav-link" href="#">Page</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+
+			<br /> <br /> <br />
+
+			<h3>
+				<b><i>Customers</i></b>
+			</h3>
+
+			<br>
+
+			<h2>
+				<b><i>Create new customer</i></b>
+			</h2>
+
+
+			<form id="create_customer_form" th:object="${emailsOfABusinessForm}" th:action="@{/business/customers/{businessName}/{emailOfUser}}" method='POST'>
+
+				<div class="form-group">
+					<label>Customer Name</label> <input id="customerNameFld" name="customerNameFld" type="text" placeholder="customer name" class="form-control" required="required" />
+				</div>
+
+				<div class="form-group">
+					<label>Customer Phone Number</label> <input id="customerPhoneNumberFld" name="customerPhoneNumberFld" type="text" placeholder="customer phone number" class="form-control" required="required" />
+				</div>
+
+				<div class="form-group">
+					<label>Customer Email</label> <input id="customerEmailFld" name="customerEmailFld" type="email" placeholder="customer email" class="form-control" required="required" />
+				</div>
+
+				<div class="form-group">
+					<label>Customer Location</label> <input id="customerLocationFld" name="customerLocationFld" type="text" placeholder="customer location" class="form-control" required="required" />
+				</div>
+
+
+				<div class="form-group">
+					<input type="hidden" th:value="${emailOfUser}" id="emailOfUserFld" />
+				</div>
+
+				<div class="form-group">
+					<input type="hidden" th:value="${businessName}" id="businessNameFld" />
+				</div>
+
+				<div>
+					<input id="customerIdFld" name="customerIdFld" type="hidden" placeholder="" class="form-control" required="required" disabled="disabled" />
+				</div>
+
+				<input type="button" value="Save New customer" id="btnSaveCustomer" class="btn btn-default" /> <input type="button" value="Save customer changes" id="btnSaveCustomerChanges"
+					class="btn btn-default" /> <input type="button" value="Clear fields" id="btnClearCustomerFields" class="btn btn-default clear" />
+
+			</form>
+
+
+
+
+
+			<br /> <br /> <br />
+
+
+
+			<div class="card">
+
+				<div class="card card-body">
+
+					<div class="tableFixHead">
+						<!-- <div class="table table-responsive table-condensed table-striped"> -->
+
+						<table id="createCustomerTable" class="table table-striped  table-bordered table-hover">
+
+							<thead>
+								<tr>
+
+									<th hidden="hidden">Customer ID</th>
+									<th>Customer Name</th>
+									<th>Customer Phone Number</th>
+									<th>Customer Email</th>
+									<th>Customer Location</th>
+									<th>Delete</th>
+									<th>Edit</th>
+									<!-- <th>Delete</th>
+								<th>Edit</th> -->
+
+								</tr>
+							</thead>
+
+
+							<tbody>
+
+							</tbody>
+
+						</table>
+
+						<div id="bottom_anchor"></div>
+
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+
+
+		<br /> <br /> <br /> <br />
+	</div>
+
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<!-- Popper.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<!-- jQuery Custom Scroller CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#sidebar").mCustomScrollbar({
+				theme : "minimal"
+			});
+
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar, #content').toggleClass('active');
+				$('.collapse.in').toggleClass('in');
+				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+			});
+		});
+	</script>
+
+
+</body>
+
+</html>

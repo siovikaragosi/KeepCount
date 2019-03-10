@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Collapsible sidebar using Bootstrap 4</title>
+<!-- <link rel="stylesheet" href="../../static/css/pos/style2.css" th:href="@{css/pos/style2.css}" /> -->
+<link href="../static/css/style2.css" th:href="@{/css/style2.css}" rel="stylesheet" />
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Bootstrap CSS CDN -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	crossorigin="anonymous" />
+<!-- Our Custom CSS -->
+
+
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
+
+<!-- Font Awesome JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+<script type="text/javascript" th:src="@{/js/src/business/user/user.js}"></script>
+
+</head>
+
+<body>
+
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="/keepCount/signUp/signup" class="navbar-brand">Sign up</a>
+
+			</div>
+
+		</div>
+	</div>
+
+	<div>
+
+		<br /> <br /> <br />
+
+		<h3>
+			<b><i>show users</i></b>
+		</h3>
+
+
+		<div class="card">
+
+			<div class="card card-body">
+
+				<table class="table table-hover">
+
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Email</th>
+							<th>phone</th>
+							<th>Email</th>
+							<th>NIN</th>
+							<th>Photo</th>
+
+						</tr>
+					</thead>
+
+					<tbody>
+
+						<tr th:each="user:${users}">
+
+							<td th:text="${user.userFirstName}"></td>
+							<td th:text="${user.userLastName}"></td>
+							<td th:text="${user.userPhoneNumber}"></td>
+							<td th:text="${user.userEmail}"></td>
+							<td th:text="${user.userNIN}"></td>
+							<td><img th:src="*{user.imagePathBase64}" class="img-rounded" style="width: 100px; height: 120px;" /></td>
+							<!-- <td> <img  th:src="@{user.imagePathBase64}" style="width: 150px; height: 150px;"/></td> -->
+
+							<!-- 							 <img  th:src="@{'data:image/jpeg;base64,'+${sb.encodedString}}" /> -->
+						</tr>
+
+					</tbody>
+
+				</table>
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+
+
+</body>
+
+</html>

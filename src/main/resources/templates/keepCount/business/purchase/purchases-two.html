@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+<title>Purchases-cash</title>
+<meta charset="utf-8">
+<meta
+	http-equiv="X-UA-Compatible"
+	content="IE=edge"
+>
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1"
+>
+<link
+	href="../static/css/style2.css"
+	th:href="@{/css/main.css}"
+	rel="stylesheet"
+/>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- Font-icon css-->
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+>
+
+<script
+	type="text/javascript"
+	th:src="@{/js/src/business/purchase/purchasesTwo.js}"
+></script>
+
+<script
+	type="text/javascript"
+	th:src="@{/js/src/business/numberFormat/numberFormat.js}"
+></script>
+
+<script
+	type="text/javascript"
+	th:src="@{/js/src/business/purchase/addNewPurchasesTwo.js}"
+></script>
+
+
+<script
+	type="text/javascript"
+	th:src="@{/js/src/business/purchase/purchasesTwoNumberFormatting.js}"
+></script>
+
+
+<script
+	type="text/javascript"
+	th:src="@{/js/src/business/purchase/purchasesTwoAlert.js}"
+></script>
+
+
+
+<style type="text/css">
+.tableFixHead {
+	overflow: auto;
+	height: 300px;
+}
+
+/* table {
+	border-collapse: collapse;
+	width: 100%;
+} */
+
+/* th, td {
+	padding: 8px 16px;
+}
+ */
+/* #itemListTable th {
+	background: olive;
+	font-style: italic;
+	font-stretch: ultra-condensed;
+	font-weight: bolder;
+	color: maroon;
+} */
+#cartListTable th {
+	background: olive;
+	font-style: italic;
+	font-stretch: ultra-condensed;
+	font-weight: bolder;
+	color: maroon;
+}
+</style>
+<!-- styling the select2 drop down to make it fit the width of the form otherwise it would shrink its width -->
+<style type="text/css">
+.select2 {
+	width: 100% !important;
+}
+</style>
+<script>
+	$( document ).ready( function() {
+		$( '.tableFixHead' ).on( 'scroll' , function() {
+			$( 'thead' , this ).css( 'transform' , 'translateY(' + this.scrollTop + 'px)' );
+		} );
+	} );
+</script>
+<style type="text/css">
+.kdnotification {
+	display: none
+}
+
+.kdnotification a {
+	text-shadow: 0 1px 0 #444
+}
+
+.kdnotification {
+	position: fixed;
+	padding: 10px;
+	z-index: 20001;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px
+}
+
+.kdnotification .kdnotification-title {
+	color: #fff;
+	font-size: 24px;
+	line-height: 36px;
+	margin: 2px;
+	font-weight: 700
+}
+
+.kdnotification .kdnotification-content {
+	font-size: 16px;
+	line-height: 18px;
+	color: #fff
+}
+
+.kdnotification .kdnotification-timer {
+	position: absolute;
+	top: 21px;
+	right: 25px;
+	color: #fff;
+	line-height: 15px;
+	text-align: center;
+	font-size: 15px;
+	width: 20px;
+	height: 24px
+}
+
+.kdnotification a {
+	position: absolute;
+	cursor: pointer;
+	display: block;
+	top: 24px;
+	right: 5px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 24px;
+	text-decoration: none;
+	color: #fff;
+	width: 20px;
+	height: 24px
+}
+
+.kdnotification-title {
+	font-size: 18px;
+	line-height: 28px;
+	float: none
+}
+
+.kdnotification-title {
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	float: none
+}
+
+.kdnotification.mini {
+	-webkit-border-radius: 0 0 5px 5px;
+	-moz-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
+	padding: 1px;
+	-webkit-box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000;
+	-moz-box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000;
+	box-shadow: 0 0 1px 1px rgba(255, 255, 255, .1), inset 0 0 2px #000
+}
+
+.kdnotification-title {
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 400;
+	float: none;
+	padding: 2px 10px
+}
+
+.kdnotification.mini .kdnotification-title p {
+	padding: 0 10px
+}
+
+.kdnotification.mini.error {
+	background: rgba(185, 74, 72, .9);
+	font-weight: 600
+}
+
+.kdnotification.mini.success {
+	background: rgba(70, 136, 71, .8);
+	font-weight: 600
+}
+</style>
+</head>
+<body class="app sidebar-mini rtl">
+	<div
+		id="notification"
+		class="kdnotification main"
+	>
+		<div class="kdnotification-title"></div>
+	</div>
+	<!-- Navbar-->
+	<header class="app-header">
+		<a
+			class="app-header__logo"
+			href="#"
+		>Lazimisha</a>
+		<!-- Sidebar toggle button-->
+		<a
+			class="app-sidebar__toggle"
+			href="#"
+			data-toggle="sidebar"
+			aria-label="Hide Sidebar"
+		></a>
+		<!-- Navbar Right Menu-->
+		<ul class="app-nav">
+			<li class="app-search"><input
+				class="app-search__input"
+				type="search"
+				placeholder="Search"
+			>
+				<button class="app-search__button">
+					<i class="fa fa-search"></i>
+				</button></li>
+			<!--Notification Menu-->
+			<li class="dropdown"><a
+				class="app-nav__item"
+				href="#"
+				data-toggle="dropdown"
+				aria-label="Show notifications"
+			><i class="fa fa-bell-o fa-lg"></i></a>
+				<ul class="app-notification dropdown-menu dropdown-menu-right">
+					<li class="app-notification__title">You have 4 new notifications.</li>
+					<div class="app-notification__content">
+						<li><a
+							class="app-notification__item"
+							href="javascript:;"
+						><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i
+										class="fa fa-envelope fa-stack-1x fa-inverse"
+									></i></span></span>
+								<div>
+									<p class="app-notification__message">Lisa sent you a mail</p>
+									<p class="app-notification__meta">2 min ago</p>
+								</div></a></li>
+						<li><a
+							class="app-notification__item"
+							href="javascript:;"
+						><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i
+										class="fa fa-hdd-o fa-stack-1x fa-inverse"
+									></i></span></span>
+								<div>
+									<p class="app-notification__message">Mail server not working</p>
+									<p class="app-notification__meta">5 min ago</p>
+								</div></a></li>
+						<li><a
+							class="app-notification__item"
+							href="javascript:;"
+						><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i
+										class="fa fa-money fa-stack-1x fa-inverse"
+									></i></span></span>
+								<div>
+									<p class="app-notification__message">Transaction complete</p>
+									<p class="app-notification__meta">2 days ago</p>
+								</div></a></li>
+						<div class="app-notification__content">
+							<li><a
+								class="app-notification__item"
+								href="javascript:;"
+							><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i
+											class="fa fa-envelope fa-stack-1x fa-inverse"
+										></i></span></span>
+									<div>
+										<p class="app-notification__message">Lisa sent you a mail</p>
+										<p class="app-notification__meta">2 min ago</p>
+									</div></a></li>
+							<li><a
+								class="app-notification__item"
+								href="javascript:;"
+							><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i
+											class="fa fa-hdd-o fa-stack-1x fa-inverse"
+										></i></span></span>
+									<div>
+										<p class="app-notification__message">Mail server not working</p>
+										<p class="app-notification__meta">5 min ago</p>
+									</div></a></li>
+							<li><a
+								class="app-notification__item"
+								href="javascript:;"
+							><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i
+											class="fa fa-money fa-stack-1x fa-inverse"
+										></i></span></span>
+									<div>
+										<p class="app-notification__message">Transaction complete</p>
+										<p class="app-notification__meta">2 days ago</p>
+									</div></a></li>
+						</div>
+					</div>
+					<li class="app-notification__footer"><a href="#">See all notifications.</a></li>
+				</ul></li>
+			<!-- User Menu-->
+			<li class="dropdown"><a
+				class="app-nav__item"
+				href="#"
+				data-toggle="dropdown"
+				aria-label="Open Profile Menu"
+			><i class="fa fa-user fa-lg"></i></a>
+				<ul class="dropdown-menu settings-menu dropdown-menu-right">
+					<li><a
+						class="dropdown-item"
+						href="page-user.html"
+					><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+					<li><a
+						class="dropdown-item"
+						href="page-user.html"
+					><i class="fa fa-user fa-lg"></i> Profile</a></li>
+					<li><a
+						class="dropdown-item"
+						href="page-login.html"
+					><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+				</ul></li>
+		</ul>
+	</header>
+	<!-- Sidebar menu-->
+	<div
+		class="app-sidebar__overlay"
+		data-toggle="sidebar"
+	></div>
+	<aside class="app-sidebar">
+		<div class="app-sidebar__user">
+			<!-- <img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image"> -->
+			<img
+				class="app-sidebar__user-avatar"
+				src="/images/salah.jpg"
+				alt="User Image"
+				style="width: 50px; height: 60px;"
+			>
+			<!-- style="width=100px; height:120px" -->
+			<div>
+				<p class="app-sidebar__user-name">DC</p>
+				<p class="app-sidebar__user-designation">Devloper</p>
+			</div>
+		</div>
+		<ul class="app-menu">
+			<li><a
+				class="app-menu__item"
+				href="#"
+			><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+			<li class="treeview"><a
+				class="app-menu__item"
+				href="#"
+				data-toggle="treeview"
+			><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Items (Commodities)</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a
+						class="treeview-item"
+						href="/business/items/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i> Add - Edit - Delete items</a></li>
+					<li><a
+						class="treeview-item"
+						href="/business/unitsOfMeasurement/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i> Unit of measurement</a></li>
+					<li><a
+						class="treeview-item"
+						href="/business/pricing/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i> Pricing</a></li>
+				</ul></li>
+			<li class="treeview"><a
+				class="app-menu__item"
+				href="#"
+				data-toggle="treeview"
+			><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Purchases</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a
+						class="treeview-item"
+						href="/business/purchasesTwo/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>Purchases cash</a></li>
+					<li><a
+						class="treeview-item"
+						href="/business/purchasesCredit/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>Purchases credit</a></li>
+
+					<li><a
+						class="treeview-item"
+						href="/business/purchasesReturns/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>Purchases Returns</a></li>
+
+					<li><a
+						class="treeview-item"
+						href="/business/suppliers/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>Suppliers</a></li>
+
+
+				</ul></li>
+			<li class="treeview"><a
+				class="app-menu__item"
+				href="#"
+				data-toggle="treeview"
+			><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Sales</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a
+						class="treeview-item"
+						href="/business/pos/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>POS cash</a></li>
+					<li><a
+						class="treeview-item"
+						href="/business/posCredit/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>POS credit</a></li>
+					<li><a
+						class="treeview-item"
+						href="/business/salesReturns/{businessName}/{emailOfUser}"
+					><i class="icon fa fa-circle-o"></i>Sales Returns</a></li>
+				</ul></li>
+			<li><a
+				class="app-menu__item"
+				href="/business/orders/{businessName}/{emailOfUser}"
+			><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Orders</span></a></li>
+			<li><a
+				class="app-menu__item"
+				href="/business/reports/{businessName}/{emailOfUser}"
+			><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Reports</span></a></li>
+			<li><a
+				class="app-menu__item"
+				href="/business/auditHistory/{businessName}/{emailOfUser}"
+			><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">History</span></a></li>
+		</ul>
+	</aside>
+	<main class="app-content">
+	<div class="app-title">
+		<div>
+			<h1>
+				<i class="fa fa-edit"></i>Point of purchases
+			</h1>
+			<p>purchase from here...</p>
+		</div>
+		<ul class="app-breadcrumb breadcrumb">
+			<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+			<li class="breadcrumb-item">Forms</li>
+			<li class="breadcrumb-item"><a href="#">Custom Componants</a></li>
+		</ul>
+	</div>
+	<div class="row">
+		<!-- this onload can be seen from the pos.html -->
+		<!-- onload="populateCartList()" -->
+		<div class="col-md-12">
+			<div class="tile">
+
+				<button
+					type="button"
+					class="btn btn-success"
+					data-toggle="modal"
+					data-target="#addNewPurchaseModal"
+					onclick="populateBothItemAndSupplierDropDownLists(); refreshNumberFormatList();"
+				>New Purchase</button>
+
+				<button
+					type="button"
+					class="btn btn-success"
+					data-toggle="modal"
+					data-target="#addToCartItemListModal"
+					onclick="reShowTheNePurchasesTwoPopUp();"
+				>Edit Purchase</button>
+				<button
+					type="button"
+					class="btn btn-success"
+					data-toggle="modal"
+					data-target="#addToCartItemListModal"
+				>Delete Purchase</button>
+				<br /> <br />
+				<form
+					id="pos_form"
+					th:object="${emailsOfABusinessForm}"
+					th:action="@{/business/pos/{businessName}/{emailOfUser}}"
+					method='POST'
+				>
+					<div class="tableFixHead">
+						<!-- <div class="table table-responsive table-condensed table-striped"> -->
+						<table
+							id="cartListTable"
+							class="table table-responsive"
+						>
+							<!-- <table id="createPricingTable" class="table table-striped  table-bordered table-hover"> -->
+							<!-- <caption>Items ready for sale</caption> -->
+							<thead>
+								<tr>
+									<!-- 1 -->
+									<th>Date</th>
+									<!-- 2 -->
+									<th>Item</th>
+									<!-- 3 -->
+									<th>Quantity</th>
+									<!-- 4 -->
+									<th>Unit Cost</th>
+									<!-- 5 -->
+									<th>Credit?</th>
+									<!-- 6 -->
+									<th>Discount<br>Received
+									</th>
+									<!-- 7 -->
+									<th>Amount <br>Cleared
+									</th>
+									<!-- 8 -->
+									<th>Total<br>(Manual)
+									</th>
+									<!-- 9 -->
+									<th>Total<br>(Auto)
+									</th>
+									<!-- 10 -->
+									<th>Balance</th>
+									<!-- 11 -->
+									<th>Supplier<br>(Purchased from)
+									</th>
+									<!-- 12 -->
+									<th>Narration</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<br />
+					<div class="form-group">
+						<input
+							type="hidden"
+							th:value="${emailOfUser}"
+							id="emailOfUserFld"
+						/>
+					</div>
+					<div class="form-group">
+						<input
+							type="hidden"
+							th:value="${businessName}"
+							id="businessNameFld"
+						/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div
+		class="modal fade"
+		id="addNewPurchaseModal"
+		role="dialog"
+	>
+		<div
+			class="modal-dialog"
+			role="document"
+		>
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Record new purchase</h5>
+					<button
+						type="button"
+						class="close"
+						data-dismiss="modal"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form class="tile">
+						<label>Choose Number Format</label> <select
+							id="numberFormatFld"
+							onchange="uponChangingNumberFormat();"
+						></select>
+						<div class="col-sm-12">
+
+							<!-- ********************* date controls *************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseDateId"
+								>Date</label>
+								<div class="col-sm-12">
+									<input
+										type="date"
+										class="form-control"
+										id="inputPurchaseDateId"
+										placeholder="date"
+									/>
+								</div>
+							</div>
+
+							<!-- ************************************ item controls **************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseItemId"
+								>Item</label>
+								<div class="col-sm-12">
+									<select
+										class="col-sm-12 form-control"
+										id="inputPurchaseItemId"
+									>
+										<optgroup label="Select an item"></optgroup>
+									</select>
+									<!-- <input type="text" class="form-control" id="inputPurchaseItemId" placeholder="item" /> -->
+								</div>
+							</div>
+
+
+							<!-- ***************************** item quantity ************************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseQuantityId"
+								>Quantity</label>
+								<div class="col-sm-12">
+									<input
+										type="text"
+										class="form-control"
+										id="inputPurchaseQuantityId"
+										placeholder="quantity"
+										onblur="postQuantityOfItemForVerification();"
+									/>
+								</div>
+							</div>
+
+							<!-- *************************** unit cost ********************************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseUnitCostId"
+								>Unit cost</label>
+								<div class="col-sm-12">
+									<input
+										type="text"
+										class="form-control"
+										id="inputPurchaseUnitCostId"
+										placeholder="unit cost"
+										onblur="postUnitCost();"
+									/>
+								</div>
+							</div>
+
+							<!-- *********************************** credit ***************************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseCreditId"
+								>Credit?</label>
+								<div class="col-sm-12 ">
+									<input
+										type="checkbox"
+										id="inputPurchaseCreditId"
+									/>
+								</div>
+							</div>
+
+							<!-- ******************************************* discount received ***************************** -->
+							<div
+								class="form-group row"
+								hidden="hidden"
+							>
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseDiscountReceivedId"
+									hidden="hidden"
+								>Discount Received</label>
+								<div class="col-sm-12">
+									<input
+										type="text"
+										class="form-control"
+										id="inputPurchaseDiscountReceivedId"
+										placeholder="discount received"
+										hidden="hidden"
+									/>
+								</div>
+							</div>
+
+							<!-- ************************************ amount paid ***************************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseAmountPaidId"
+								>Amount Paid</label>
+								<div class="col-sm-12">
+									<input
+										type="text"
+										class="form-control"
+										id="inputPurchaseAmountPaidId"
+										placeholder="amount paid"
+										onblur="postAmountPaid();"
+									/>
+								</div>
+							</div>
+
+							<!--  *************************** total to be paid manual *************************************** -->
+							<div
+								class="form-group row"
+								hidden="hidden"
+							>
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseTotalToBePaidManualId"
+									hidden="hidden"
+								>Total to be paid (Enter)</label>
+								<div class="col-sm-12">
+									<input
+										type="text"
+										class="form-control"
+										id="inputPurchaseTotalToBePaidManualId"
+										placeholder="enter total to be paid"
+										hidden="hidden"
+									/>
+								</div>
+							</div>
+
+							<!-- *********************************** total to be paid auto ************************************ -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseTotalToBePaidAutoId"
+								>Total to be paid (Auto)</label>
+								<div class="col-sm-12">
+									<input
+										disabled="disabled"
+										type="text"
+										class="form-control"
+										id="inputPurchaseTotalToBePaidAutoId"
+										placeholder="total (auto)"
+									/>
+								</div>
+							</div>
+							<!-- supplier -->
+
+							<!-- <div class="form-group row">
+								<label class="col-sm-5 col-form-label" id="labelPurchaseSupplierId">Supplier</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="inputPurchaseSupplierId" placeholder="supplier" />
+								</div>
+							</div> -->
+
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseSupplierId"
+								>Supplier</label>
+								<div class="col-sm-12">
+									<select
+										class="col-sm-12 form-control"
+										id="inputPurchaseSupplierId"
+									>
+										<optgroup label="Select the supplier"></optgroup>
+									</select>
+									<!-- <input type="text" class="form-control" id="inputPurchaseItemId" placeholder="item" /> -->
+								</div>
+							</div>
+
+
+							<!-- ******************************** narration ******************************** -->
+							<div class="form-group row">
+								<label
+									class="col-sm-5 col-form-label"
+									id="labelPurchaseNarrationId"
+								>Narration</label>
+								<div class="col-sm-12">
+									<textarea
+										rows="5"
+										cols="20"
+										class="form-control"
+										id="inputPurchaseNarrationId"
+										placeholder="transaction narration here..."
+									></textarea>
+								</div>
+							</div>
+
+							<!-- ***************************** manipulation buttons ******************************** -->
+							<div class="form-group row">
+								<div class="modal-footer">
+
+									<button
+										type="button"
+										class="btn btn-success"
+										id="btnPurchaseSaveNewPurchase"
+										onclick=" addNewPurchasesTwo();"
+									>Save</button>
+
+									<button
+										type="button"
+										class="btn btn-danger"
+										data-dismiss="modal"
+										id="dismiss"
+									>Close</button>
+
+									<button
+										type="button"
+										class="btn btn-info"
+										id="btnPurchaseClearNewPurchaseField"
+										onclick="findIdOfSelectedItem();"
+									>Clear entries</button>
+
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+
+
+	<!-- Modal -->
+	<div
+		id="myModal"
+		class="modal fade"
+		role="dialog"
+	>
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div
+				class="modal-content"
+				style="background-color: teal;"
+			>
+				<div class="modal-header">
+					<h4 class="modal-title">Empty field</h4>
+					<button
+						type="button"
+						class="close"
+						data-dismiss="modal"
+					>&times;</button>
+				</div>
+				<div class="modal-body">
+					<p style="color: black">
+						<i><strong></strong></i>
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button
+						type="button"
+						class="btn btn-danger"
+						data-dismiss="modal"
+						id="dismiss"
+					>Close</button>
+					<button
+						type="button"
+						class="btn btn-info"
+						id="OK"
+					>OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Essential javascripts for application to work-->
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/jquery-3.2.1.min.js}"
+	></script>
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/popper.min.js}"
+	></script>
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/bootstrap.min.js}"
+	></script>
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/main.js}"
+	></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/plugins/pace.min.js}"
+	></script>
+	<!-- Page specific javascripts-->
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/plugins/bootstrap-datepicker.min.js}"
+	></script>
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/plugins/select2.min.js}"
+	></script>
+	<script
+		type="text/javascript"
+		th:src="@{/js/src/js/plugins/bootstrap-datepicker.min.js}"
+	></script>
+	<script type="text/javascript">
+		$( '#inputPurchaseItemId' ).select2();
+		$( '#inputPurchaseSupplierId' ).select2();
+	</script>
+</body>
+</html>
